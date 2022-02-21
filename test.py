@@ -12,5 +12,25 @@ def test_show_summary(client):
     assert response.status_code == 400
 
     
-
+def test_purchase_places(client):
+    response = client.post("/purchasePlaces", data={
+        "places": "10",
+        "club" : "Simply Lift",
+        "competition": "Spring Festival"
+    })
+    assert response.status_code == 200
     
+    response = client.post("/purchasePlaces", data={
+        "places": "10",
+        "club" : "Simply Lift",
+        "competition": "Spring Festival"
+    })
+    assert response.status_code == 400
+
+    response = client.post("/purchasePlaces", data={
+        "places": "50",
+        "club" : "Simply Lift",
+        "competition": "Spring Festival"
+
+    })
+    assert response.status_code == 400    
