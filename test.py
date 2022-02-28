@@ -83,6 +83,24 @@ def test_purchases_more_than_13_places(client, mocker):
     })
     assert response.status_code == 400
 
+def test_purchase_outdated_palces(client, mocker):
+    mocker.patch('server.loadClubs', return_value=CLUBS)
+    mocker.patch('server.loadCompetitions', return_value=COMPETITIONS)
+
+    response = client.post("/purchasePlaces", data={
+        "places": "13",
+        "club" : "Simply Lift",
+        "competition": "Spring Festival"
+    })
+    assert response.status_code == 400
+
+    response = client.post("/purchasePlaces", data={
+        "places": "1",
+        "club" : "She Lifts",
+        "competition": "Fall Classic"
+    })
+    assert response.status_code == 400
+
     
 
     
