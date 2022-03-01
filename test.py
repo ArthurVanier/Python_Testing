@@ -1,8 +1,12 @@
 
+
+
+import unittest
 import pytest
 from pytest_mock import mocker
 import json
-from server import loadClubs, loadCompetitions
+
+from mock import patch
 
 CLUBS=[
     {
@@ -47,8 +51,6 @@ def test_show_summary(client):
 
     
 def test_purchase_places(client, mocker):
-    mocker.patch('server.loadClubs', return_value=CLUBS)
-    mocker.patch('server.loadCompetitions', return_value=COMPETITIONS)
 
     response = client.post("/purchasePlaces", data={
         "places": "10",
@@ -73,8 +75,6 @@ def test_purchase_places(client, mocker):
     assert response.status_code == 400   
 
 def test_purchases_more_than_13_places(client, mocker):
-    mocker.patch('server.loadClubs', return_value=CLUBS)
-    mocker.patch('server.loadCompetitions', return_value=COMPETITIONS)
 
     response = client.post("/purchasePlaces", data={
         "places": "13",
@@ -84,8 +84,6 @@ def test_purchases_more_than_13_places(client, mocker):
     assert response.status_code == 400
 
 def test_purchase_outdated_palces(client, mocker):
-    mocker.patch('server.loadClubs', return_value=CLUBS)
-    mocker.patch('server.loadCompetitions', return_value=COMPETITIONS)
 
     response = client.post("/purchasePlaces", data={
         "places": "13",
@@ -101,6 +99,14 @@ def test_purchase_outdated_palces(client, mocker):
     })
     assert response.status_code == 400
 
-    
+@patch('server.clubs',CLUBS)
+@patch('server.competitions', COMPETITIONS)
+def test_substract_point_used(client, mocker):
 
+    response = client.post("/purchasePlaces", data={
+        "places": "13",
+        "club" : "Simply Lift",
+        "competition": "Spring Festival"
+    })
+    assert response.status_code == 400
     

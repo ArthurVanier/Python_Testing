@@ -1,4 +1,4 @@
-from server import app as app_server
+from .server import app as app_server
 import pytest
 
 @pytest.fixture

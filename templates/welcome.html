@@ -31,6 +31,13 @@
         {% endfor %}
     </ul>
     {%endwith%}
-
+    <ul>
+    <h3>Clubs</h3>
+    {% for club_item in clubs %}
+        <li>
+            {{club_item['name']}} : {{club_item['points']}}
+        </li>
+    {% endfor %}
+    </ul>
 </body>
 </html>
